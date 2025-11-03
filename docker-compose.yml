@@ -3,21 +3,20 @@ services:
     build:
       context: ./docker/php
       dockerfile: Dockerfile
-    container_name: laravel_app
+    container_name: takamol_app
     working_dir: /var/www
     volumes:
       - ./:/var/www
       - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
     environment:
-
       PHP_OPCACHE_ENABLE: "1"
       PHP_OPCACHE_VALIDATE_TIMESTAMPS: "1"
     networks:
-      - laravel
+      - takamol
 
   webserver:
     image: nginx:1.25-alpine
-    container_name: laravel_webserver
+    container_name: takamol_webserver
     working_dir: /var/www
     volumes:
       - ./:/var/www
@@ -27,25 +26,18 @@ services:
     depends_on:
       - app
     networks:
-      - laravel
+      - takamol
 
   db:
     image: mariadb:latest
-    container_name: laravel_db
+    container_name: takamol_db
     environment:
-      MYSQL_ROOT_PASSWORD: laravel
-      MYSQL_USER: laravel
-      MYSQL_PASSWORD: laravel
-      MYSQL_DATABASE: laravel
-
-    ports:
-      - "3306:3306"
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: takamol
+      MYSQL_USER: takamol
+      MYSQL_PASSWORD: takamol
     networks:
-      - laravel
-
+      - takamol
 
 networks:
-  laravel:
-
-volumes:
-    pgdata:
+  takamol:
